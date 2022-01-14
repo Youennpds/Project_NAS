@@ -1,0 +1,103 @@
+ -----------------------------------------------------------
+|=== Configuration des routeurs de bordures PE1 et PE2 ===  |
+ -----------------------------------------------------------
+
+*---Configuration des interfaces---*
+
+interface Loopback0
+	ip address X.X.X.X 255.255.255.255
+	ip ospf XXX area X
+interface GigabitEthernet
+	ip address
+	ip ospf
+
+*---Configuration de OSPF---*
+
+router ospf XXX
+	router-id XX.XX.XX.XX
+	passive-interface GigabitEthernet3/0
+	passive-interface GigabitEthernet4/0
+	network 192.168.20.0 0.0.0.255 area 0
+ 	network 192.168.40.0 0.0.0.255 area 0
+ 	mpls ldp autoconfig
+	"""Les interfaces qui quittent le routeur de bordure pour aller vers les clients
+		doivent être en OSPF passif"""
+
+*---Configuration de BGP---*
+
+router bgp XXX
+	neighbor 10.10.10.10 remote-as 100
+	neighbor 10.10.10.10 update-source Loopback0
+	neighbor 20.20.20.20 remote-as 100
+	neighbor 20.20.20.20 update-source Loopback0
+	neighbor 30.30.30.30 remote-as 100
+	neighbor 30.30.30.30 update-source Loopback0
+	neighbor 40.40.40.40 remote-as 100
+	neighbor 40.40.40.40 update-source Loopback0
+	neighbor 120.120.120.120 remote-as 100
+	neighbor 120.120.120.120 update-source Loopback0
+	neighbor 192.168.20.2 remote-as 1000
+	neighbor 192.168.20.2 send-community
+	neighbor 192.168.20.2 route-map customer-in in
+	neighbor 192.168.20.2 route-map customer-out out
+	neighbor 192.168.40.2 remote-as 10000
+	neighbor 192.168.40.2 send-community
+	neighbor 192.168.40.2 route-map peer-in in
+	neighbor 192.168.40.2 route-map peer-out out
+
+*---Configuration du trafic In/Out(Bound)---*
+
+	//Creation des routes maps
+	
+		set local-preference 150 | set community 100:150  	pour les clients
+		set local-preference 100 | set community 100:100 	pour les peer
+		set local-preference 50  | set community 100:50  	pour les peering 
+
+ -----------------------------------------------------------
+|=== Configuration des routeurs de coeurs ===  |
+ -----------------------------------------------------------
+
+
+*---Configuration des interfaces---*
+
+interface Loopback0
+	ip address X.X.X.X 255.255.255.255
+	ip ospf XXX area X
+interface GigabitEthernet
+	ip address
+	ip ospf
+
+*---Configuration de OSPF---*
+
+router ospf XXX
+	router-id XX.XX.XX.XX
+	mpls ldp autoconfig
+
+*---Configuration de BGP---*
+
+router bgp 100
+	neighbor 20.20.20.20 remote-as 100
+	neighbor 20.20.20.20 update-source Loopback0
+	neighbor 30.30.30.30 remote-as 100
+	neighbor 30.30.30.30 update-source Loopback0
+	neighbor 40.40.40.40 remote-as 100
+	neighbor 40.40.40.40 update-source Loopback0
+	neighbor 110.110.110.110 remote-as 100
+	neighbor 110.110.110.110 update-source Loopback0
+	neighbor 120.120.120.120 remote-as 100
+	neighbor 120.120.120.120 update-source Loopback0
+
+ -----------------------------------------------------------
+|=== Configuration des routeurs clients : type CE       === |
+ -----------------------------------------------------------
+
+*---Configuration des interfaces---*
+
+
+
+*---Configuration de BGP---*
+
+router bgp XXXX
+
+	network 10.0.0.0 mask 255.255.255.0
+	neighbor 192.168.20.1 remote-as XXX (On met le numero du AS auquel appartient le routeur de bordure)
