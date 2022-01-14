@@ -1,6 +1,10 @@
- -----------------------------------------------------------
-|=== Configuration des routeurs de bordures PE1 et PE2 ===  |
- -----------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+ ---------------------------------------------------------
+|===    Configuration du routeur de bordure PE1     ===  |
+ ---------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
 
 *---Configuration des interfaces---*
 
@@ -20,43 +24,216 @@ router ospf XXX
 	network 192.168.20.0 0.0.0.255 area 0
  	network 192.168.40.0 0.0.0.255 area 0
  	mpls ldp autoconfig
-	"""Les interfaces qui quittent le routeur de bordure pour aller vers les clients
-		doivent être en OSPF passif"""
+
+	/*
+	  Les interfaces qui quittent le routeur de bordure pour aller vers les clients
+	  doivent être en OSPF passif
+       */
 
 *---Configuration de BGP---*
 
 router bgp XXX
-	neighbor 10.10.10.10 remote-as 100
-	neighbor 10.10.10.10 update-source Loopback0
-	neighbor 20.20.20.20 remote-as 100
-	neighbor 20.20.20.20 update-source Loopback0
-	neighbor 30.30.30.30 remote-as 100
-	neighbor 30.30.30.30 update-source Loopback0
-	neighbor 40.40.40.40 remote-as 100
-	neighbor 40.40.40.40 update-source Loopback0
-	neighbor 120.120.120.120 remote-as 100
-	neighbor 120.120.120.120 update-source Loopback0
-	neighbor 192.168.20.2 remote-as 1000
-	neighbor 192.168.20.2 send-community
-	neighbor 192.168.20.2 route-map customer-in in
-	neighbor 192.168.20.2 route-map customer-out out
-	neighbor 192.168.40.2 remote-as 10000
-	neighbor 192.168.40.2 send-community
-	neighbor 192.168.40.2 route-map peer-in in
-	neighbor 192.168.40.2 route-map peer-out out
+ bgp log-neighbor-changes
+ 
+ /*
+    Pour chaque routeur du réseau coeur, on déclare
+    son loopback comme neighbor et on lui envoi aussi le dommunity pour les politiques de
+ */
+
+ 	/* Routeur P1 */
+ neighbor 10.10.10.10 remote-as 100
+ neighbor 10.10.10.10 update-source Loopback0
+ neighbor 10.10.10.10 send-community
+
+	/* Routeur P2 */
+ neighbor 20.20.20.20 remote-as 100
+ neighbor 20.20.20.20 update-source Loopback0
+ neighbor 20.20.20.20 send-community
+ 
+	/* Routeur P3 */
+ neighbor 30.30.30.30 remote-as 100
+ neighbor 30.30.30.30 update-source Loopback0 
+ neighbor 30.30.30.30 send-community
+	
+	/* Routeur P4 */
+ neighbor 40.40.40.40 remote-as 100
+ neighbor 40.40.40.40 update-source Loopback0
+ neighbor 40.40.40.40 send-community
+	
+	/* Routeur PE1 */
+ neighbor 120.120.120.120 remote-as 100
+ neighbor 120.120.120.120 update-source Loopback0
+ neighbor 120.120.120.120 send-community
+
+ /* 
+    Ici on applique les route-map sur les liens concernés
+ */
+ neighbor 192.168.20.2 remote-as 1000
+ neighbor 192.168.20.2 route-map Inbound-Customer in
+ neighbor 192.168.20.2 route-map Outbound-Customer out
+ neighbor 192.168.40.2 remote-as 10000
+ neighbor 192.168.40.2 route-map Inbound-Peer in
+ neighbor 192.168.40.2 route-map Outbound-Peer out
+
 
 *---Configuration du trafic In/Out(Bound)---*
 
-	//Creation des routes maps
+	/*Création des route-map*/
+
+route-map Outbound-Peering permit 10
+ match community Outbound-Peering
+!
+route-map Outbound-Peer permit 10
+ match community Outbound-Peer
+!
+route-map Outbound-Customer permit 10
+ match community Outbound-Customer
+!
+route-map Inbound-Peering permit 10
+ set local-preference 50
+ set community 100:50
+!
+route-map Inbound-Peer permit 10
+ set local-preference 100
+ set community 100:100
+!
+route-map Inbound-Customer permit 10
+ set local-preference 150
+ set community 100:150
+
+	/*Application des community-list*/
+
+ip community-list expanded Outbound-Customer permit 100:150
+ip community-list expanded Outbound-Customer permit 100:100
+ip community-list expanded Outbound-Customer permit 100:50
+!
+ip community-list expanded Outbound-Peering permit 100:150
+!
+ip community-list expanded Outbound-Peer permit 100:150
+!
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+ ---------------------------------------------------------
+|===    Configuration du routeur de bordure PE2     ===  |
+ ---------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+*---Configuration des interfaces---*
+
+interface Loopback0
+	ip address X.X.X.X 255.255.255.255
+	ip ospf XXX area X
+interface GigabitEthernet
+	ip address
+	ip ospf
+
+*---Configuration de OSPF---*
+
+router ospf XXX
+	router-id XX.XX.XX.XX
+	passive-interface GigabitEthernet3/0
+	passive-interface GigabitEthernet4/0
+	network 192.168.30.0 0.0.0.255 area 0
+ 	network 192.168.60.0 0.0.0.255 area 0
+ 	mpls ldp autoconfig
+
+	/*
+	  Les interfaces qui quittent le routeur de bordure pour aller vers les clients
+	  doivent être en OSPF passif
+       */
+
+*---Configuration de BGP---*
+
+router bgp XXX
+ bgp log-neighbor-changes
+ 
+ /*
+    Pour chaque routeur du réseau coeur, on déclare
+    son loopback comme neighbor et on lui envoi aussi le dommunity pour les politiques de
+ */
+
+ 	/* Routeur P1 */
+ neighbor 10.10.10.10 remote-as 100
+ neighbor 10.10.10.10 update-source Loopback0
+ neighbor 10.10.10.10 send-community
+
+	/* Routeur P2 */
+ neighbor 20.20.20.20 remote-as 100
+ neighbor 20.20.20.20 update-source Loopback0
+ neighbor 20.20.20.20 send-community
+ 
+	/* Routeur P3 */
+ neighbor 30.30.30.30 remote-as 100
+ neighbor 30.30.30.30 update-source Loopback0 
+ neighbor 30.30.30.30 send-community
 	
-		set local-preference 150 | set community 100:150  	pour les clients
-		set local-preference 100 | set community 100:100 	pour les peer
-		set local-preference 50  | set community 100:50  	pour les peering 
+	/* Routeur P4 */
+ neighbor 40.40.40.40 remote-as 100
+ neighbor 40.40.40.40 update-source Loopback0
+ neighbor 40.40.40.40 send-community
+	
+	/* Routeur PE1 */
+ neighbor 120.120.120.120 remote-as 100
+ neighbor 120.120.120.120 update-source Loopback0
+ neighbor 120.120.120.120 send-community
+
+
+ /* 
+    Ici on applique les route-map sur les liens concernés
+ */
+ neighbor 192.168.30.2 remote-as 2000
+ neighbor 192.168.30.2 route-map Inbound-Customer in
+ neighbor 192.168.30.2 route-map Outbound-Customer out
+ neighbor 192.168.60.2 remote-as 20000
+ neighbor 192.168.60.2 route-map Inbound-Peer in
+ neighbor 192.168.60.2 route-map Outbound-Peer out
+
+
+*---Configuration du trafic In/Out(Bound)---*
+
+	/*Création des route-map*/
+
+route-map Outbound-Peering permit 10
+ match community Outbound-Peering
+!
+route-map Outbound-Peer permit 10
+ match community Outbound-Peer
+!
+route-map Outbound-Customer permit 10
+ match community Outbound-Customer
+!
+route-map Inbound-Peering permit 10
+ set local-preference 50
+ set community 100:50
+!
+route-map Inbound-Peer permit 10
+ set local-preference 100
+ set community 100:100
+!
+route-map Inbound-Customer permit 10
+ set local-preference 150
+ set community 100:150
+
+	/*Application des community-list*/
+
+ip community-list expanded Outbound-Customer permit 100:150
+ip community-list expanded Outbound-Customer permit 100:100
+ip community-list expanded Outbound-Customer permit 100:50
+!
+ip community-list expanded Outbound-Peering permit 100:150
+!
+ip community-list expanded Outbound-Peer permit 100:150
+!
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
 
  -----------------------------------------------------------
 |=== Configuration des routeurs de coeurs ===  |
  -----------------------------------------------------------
 
+----------------------------------------------------------------------------------------------------------------------------------------------------
 
 *---Configuration des interfaces---*
 
@@ -87,9 +264,13 @@ router bgp 100
 	neighbor 120.120.120.120 remote-as 100
 	neighbor 120.120.120.120 update-source Loopback0
 
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
  -----------------------------------------------------------
-|=== Configuration des routeurs clients : type CE       === |
+|===         Configuration des routeurs clients        === |
  -----------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
 
 *---Configuration des interfaces---*
 
