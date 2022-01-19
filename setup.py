@@ -15,14 +15,14 @@ def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
     #config interface
     tn.write(b"interface Loopback0\n")
     tn.write(b"ip address "+str(100+10*(pos+1))+"."+str(100+10*(pos+1))+"."+str(100+10*(pos+1))+"."+str(100+10*(pos+1))+" 255.255.255.255\n")
-    tn.write(b"ip ospf XXX area X\n") # !!!!!!
+    tn.write(b"ip ospf 100 area 0\n") 
     tn.write(b"interface GigabitEthernet\n")
     tn.write(b"ip address\n")
     tn.write(b"ip ospf\n")
 
     #config ospf
-    tn.write(b"router ospf XXX\n")
-    tn.write(b"router-id XX.XX.XX.XX\n") # ???
+    tn.write(b"router ospf 100\n")
+    tn.write(b"router-id "+str(100+10*(pos+1))+"."+str(100+10*(pos+1))+"."+str(100+10*(pos+1))+"."+str(100+10*(pos+1))+"\n") # @ loopbach
     for i in range(len(connected)):
         tn.write(b"passive-interface GigabitEthernet"+str(3+i))+"/0\n")
         tn.write(b"network 192.168."+str(20*(i+1)))+".0 0.0.0.255 area 0\n")
@@ -36,7 +36,7 @@ def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
     """
 
     #config bgp
-    tn.write(b"router bgp XXX\n") # ???
+    tn.write(b"router bgp 100\n")
     tn.write(b"bgp log-neighbor-changes\n")
     for i in range(nbCoeur):
         tn.write(b"neighbor "+str(10*(i+1))+"."+str(10*(i+1))+"."+str(10*(i+1))+"."+str(10*(i+1))+" remote-as 100\n")
@@ -44,7 +44,7 @@ def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
         tn.write(b"neighbor "+str(10*(i+1))+"."+str(10*(i+1))+"."+str(10*(i+1))+"."+str(10*(i+1))+" send-community\n")
     for i in range(nbPE):
         if i != pos:
-            tn.write(b"neighbor "+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+" remote-as 100\n") #Routeur PE1 : 120.120.120.120
+            tn.write(b"neighbor "+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+" remote-as 100\n") 
             tn.write(b"neighbor "+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+" update-source Loopback0\n")
             tn.write(b"neighbor "+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+" send-community\n")
 
@@ -143,9 +143,10 @@ def configClient(id, mdp, ip, connected):
     tn.write(b"cisco\n")
 
     #bgp
-    tn.write(b"router bgp XXXX\n") # ???
+    a = str(100+10*(connected[1]+1))
+    tn.write(b"router bgp "+ a +"."+ a +"."+ a +"."+ a +"\n") # @ loopback du routeur de bordure auquel il est connecté, connected donne [id, pos] du routeur de bordure
     tn.write(b"network 10.0.0.0 mask 255.255.255.0\n")
-    tn.write(b"neighbor 192.168.20.1 remote-as XXX\n") # On met le numero du AS auquel appartient le routeur de bordure
+    tn.write(b"neighbor 192.168.20.1 remote-as 100\n") # On met le numero du AS auquel appartient le routeur de bordure
 
 
     tn.write(b"\n")

@@ -14,6 +14,7 @@ bordures = list([])
 coeurs = list([])
 clients = list([])
 connectedList = list([])
+connected = list([])
 for router in data_dict["DeviceList"]:
     for routerID in router:
         typeRouter=router[routerID]["typeRouter"]
@@ -41,5 +42,6 @@ for router in bordures:
 
 for router in clients:
     for routerID in router:
-        VM.configClient(routerID, router[routerID]["telnetPassword"], router[routerID]["ipAddress"], router[routerID]["connected"])
+        connected = [router[routerID]["connected"][0], bordures.index(router[routerID]["connected"][0])]
+        VM.configClient(routerID, router[routerID]["telnetPassword"], router[routerID]["ipAddress"], connected)
 
