@@ -32,42 +32,48 @@
         "PE1": { 
           "ipAddress":"192.169.0.5",
           "telnetPassword":"password",
-          "typeRouter":"bordure"    
+          "typeRouter":"bordure",
+          "connected":["CE1","CE-PE1"]    
         }
       },
       {
         "PE2": { 
           "ipAddress":"192.169.0.6",
           "telnetPassword":"password",
-          "typeRouter":"bordure"    
+          "typeRouter":"bordure",
+          "connected":["CE2","CE-PE2"]    
         }
       },
       {
         "CE1": { 
           "ipAddress":"192.169.0.11",
           "telnetPassword":"password",
-          "typeRouter":"client"    
+          "typeRouter":"client",
+          "connected":["PE1"]    
         }
       },
       {
         "CE2": { 
           "ipAddress":"192.169.0.12",
           "telnetPassword":"password",
-          "typeRouter":"bordure"    
+          "typeRouter":"client",
+          "connected":["PE2"]    
         }
       },
       {
         "CE-PE1": { 
           "ipAddress":"192.169.0.13",
           "telnetPassword":"password",
-          "typeRouter":"bordure"    
+          "typeRouter":"peer",
+          "connected":["PE1"]
         }
       },
       {
         "CE-PE2": { 
           "ipAddress":"192.169.0.14",
           "telnetPassword":"password",
-          "typeRouter":"bordure"    
+          "typeRouter":"peer",
+          "connected":["PE2"]    
         }
       }
     ]  
