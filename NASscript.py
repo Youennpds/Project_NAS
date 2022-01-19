@@ -40,3 +40,44 @@ for router in data_dict["DeviceList"]:
             
             print(tn.read_all().decode("ascii"))
             print ("Configuration terminée \n")
+            
+"""
+import json
+import getpass
+import sys
+import telnetlib
+
+import setup.py as VM
+
+# Opening json
+with open('config.json') as json_data:
+    data_dict = json.load(json_data)
+
+# Récup data
+bordures = list([])
+coeurs = list([])
+clients = list([])
+for router in data_dict["DeviceList"]:
+    for routerID in router:
+        typeRouter=router[routerID]["typeRouter"]
+        if typeRouter == "bordure":
+            bordures.append(router)
+        elif typeRouter == "coeur":
+            coeurs.append(router)
+        elif typeRouter == "client":
+            clients.append(router)
+        else:
+            print ("non")
+
+for router in coeurs:
+    for routerID in router:
+        VM.configCoeur(routerID, router[routerID]["telnetPassword"], router[routerID]["ipAddress"])
+
+for router in bordures:
+    for routerID in router:
+        VM.configBordure(routerID, router[routerID]["telnetPassword"], router[routerID]["ipAddress"])
+
+for router in clients:
+    for routerID in router:
+        VM.configClient(routerID, router[routerID]["telnetPassword"], router[routerID]["ipAddress"])
+"""
