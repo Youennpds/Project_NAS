@@ -14,7 +14,8 @@ def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
 
     #config interface
     tn.write(b"interface Loopback0\n")
-    tn.write(b"ip address "+str(100+10*(pos+1))+"."+str(100+10*(pos+1))+"."+str(100+10*(pos+1))+"."+str(100+10*(pos+1))+" 255.255.255.255\n")
+    a=str(100+10*(pos+1)).encode("ascii")
+    tn.write(b"ip address "+a+b"."+a+b"."+a+b"."+a+b" 255.255.255.255\n")
     tn.write(b"ip ospf 100 area 0\n") 
     tn.write(b"interface GigabitEthernet\n")
     tn.write(b"ip address\n")
@@ -22,10 +23,10 @@ def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
 
     #config ospf
     tn.write(b"router ospf 100\n")
-    tn.write(b"router-id "+str(100+10*(pos+1))+"."+str(100+10*(pos+1))+"."+str(100+10*(pos+1))+"."+str(100+10*(pos+1))+"\n") # @ loopbach
+    tn.write(b"router-id "+a+b"."+a+b"."+a+b"."+a+b"\n") # @ loopback
     for i in range(len(connected)):
-        tn.write(b"passive-interface GigabitEthernet"+str(3+i)+"/0\n")
-        tn.write(b"network 192.168."+str(20*(i+1))+".0 0.0.0.255 area 0\n")
+        tn.write(b"passive-interface GigabitEthernet"+str(3+i).encode("ascii")+b"/0\n")
+        tn.write(b"network 192.168."+str(20*(i+1)).encode("ascii")+b".0 0.0.0.255 area 0\n")
     tn.write(b"mpls ldp autoconfig\n")
 
     """
@@ -39,28 +40,31 @@ def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
     tn.write(b"router bgp 100\n")
     tn.write(b"bgp log-neighbor-changes\n")
     for i in range(nbCoeur):
-        tn.write(b"neighbor "+str(10*(i+1))+"."+str(10*(i+1))+"."+str(10*(i+1))+"."+str(10*(i+1))+" remote-as 100\n")
-        tn.write(b"neighbor "+str(10*(i+1))+"."+str(10*(i+1))+"."+str(10*(i+1))+"."+str(10*(i+1))+" update-source Loopback0\n")
-        tn.write(b"neighbor "+str(10*(i+1))+"."+str(10*(i+1))+"."+str(10*(i+1))+"."+str(10*(i+1))+" send-community\n")
+        a=str(10*(i+1)).encode("ascii")
+        tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" remote-as 100\n")
+        tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" update-source Loopback0\n")
+        tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" send-community\n")
     for i in range(nbPE):
         if i != pos:
-            tn.write(b"neighbor "+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+" remote-as 100\n") 
-            tn.write(b"neighbor "+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+" update-source Loopback0\n")
-            tn.write(b"neighbor "+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+" send-community\n")
+            a=str(100+10*(i+1)).encode("ascii")
+            tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" remote-as 100\n") 
+            tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" update-source Loopback0\n")
+            tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" send-community\n")
 
     for i in range(len(connected)):
+        a=str(20*(i+1)).encode("ascii")
         if connected[i][1] == "client":
-            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 remote-as 1000\n")
-            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 route-map Inbound-Customer in\n")
-            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 route-map Outbound-Customer out\n")
+            tn.write(b"neighbor 192.168."+a+b".2 remote-as 1000\n")
+            tn.write(b"neighbor 192.168."+a+b".2 route-map Inbound-Customer in\n")
+            tn.write(b"neighbor 192.168."+a+b".2 route-map Outbound-Customer out\n")
         elif connected[i][1] == "peer":
-            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 remote-as 10000\n")
-            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 route-map Inbound-Peer in\n")
-            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 route-map Outbound-Peer out\n")
+            tn.write(b"neighbor 192.168."+a+b".2 remote-as 10000\n")
+            tn.write(b"neighbor 192.168."+a+b".2 route-map Inbound-Peer in\n")
+            tn.write(b"neighbor 192.168."+a+b".2 route-map Outbound-Peer out\n")
         elif connected[i][1] == "peering":
-            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 remote-as 10000\n")
-            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 route-map Inbound-Peering in\n")
-            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 route-map Outbound-Peering out\n")
+            tn.write(b"neighbor 192.168."+a+b".2 remote-as 100000\n")
+            tn.write(b"neighbor 192.168."+a+b".2 route-map Inbound-Peering in\n")
+            tn.write(b"neighbor 192.168."+a+b".2 route-map Outbound-Peering out\n")
         else:
             print("ERROR IN ROUTER TYPE CONNECTED")
 
@@ -108,31 +112,34 @@ def configCoeur(id, mdp, ip, nbCoeur, pos, nbPE):
     tn.write(b"cisco\n")
 
     tn.write(b"interface Loopback0\n")
-    tn.write(b"ip address "+str(10*(pos+1))+"."+str(10*(pos+1))+"."+str(10*(pos+1))+"."+str(10*(pos+1))+" 255.255.255.255\n")
-    tn.write(b"ip ospf XXX area X\n") # !!!!!!!!
+    a=str(10*(pos+1)).encode("ascii")
+    tn.write(b"ip address "+a+b"."+a+b"."+a+b"."+a+b" 255.255.255.255\n")
+    tn.write(b"ip ospf 100 area 0\n")
     tn.write(b"interface GigabitEthernet\n")
     tn.write(b"ip address\n")
     tn.write(b"ip ospf\n")
 
     #ospf
-    tn.write(b"router ospf XXX\n")
-    tn.write(b"router-id XX.XX.XX.XX\n")
+    tn.write(b"router ospf 100\n")
+    tn.write(b"router-id "+a+b"."+a+b"."+a+b"."+a+b"\n") # @loopback pour ospf
     tn.write(b"mpls ldp autoconfig\n")
 
     #bgp
     tn.write(b"router bgp 100\n")
     for i in range(nbCoeur):
         if i != pos:
-            tn.write(b"neighbor "+str(10*(i+1))+"."+str(10*(i+1))+"."+str(10*(i+1))+"."+str(10*(i+1))+" remote-as 100\n")
-            tn.write(b"neighbor "+str(10*(i+1))+"."+str(10*(i+1))+"."+str(10*(i+1))+"."+str(10*(i+1))+" update-source Loopback0\n")
+            a=str(10*(i+1)).encode("ascii")
+            tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" remote-as 100\n")
+            tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" update-source Loopback0\n")
     for i in range(nbPE):
-        tn.write(b"neighbor "+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+" remote-as 100\n")
-        tn.write(b"neighbor "+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+"."+str(100+10*(i+1))+" update-source Loopback0\n")
+        a=str(100+10*(i+1)).encode("ascii")
+        tn.write(b"neighbor "+a+"."+a+"."+a+"."+a+" remote-as 100\n")
+        tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" update-source Loopback0\n")
 
     tn.write(b"\n")
     tn.write(b"end\n")
 
-def configClient(id, mdp, ip, connected):
+def configClient(id, mdp, ip, connected, type):
     tn = telnetlib.Telnet(ip)
     tn.read_until(b"Username:")
     tn.write(id.encode("ascii") + b"\n")
@@ -143,10 +150,18 @@ def configClient(id, mdp, ip, connected):
     tn.write(b"cisco\n")
 
     #bgp
-    a = str(100+10*(connected[1]+1))
-    tn.write(b"router bgp "+ a +"."+ a +"."+ a +"."+ a +"\n") # @ loopback du routeur de bordure auquel il est connecté, connected donne [id, pos] du routeur de bordure
+    a = str(100+10*(connected[1]+1)).encode("ascii")
+    tn.write(b"router bgp "+ a +"."+ a +"."+ a +"."+ a + b"\n") # @ loopback du routeur de bordure auquel il est connecté, connected donne [id, pos] du routeur de bordure
     tn.write(b"network 10.0.0.0 mask 255.255.255.0\n")
-    tn.write(b"neighbor 192.168.20.1 remote-as 100\n") # On met le numero du AS auquel appartient le routeur de bordure
+    if type == "client":
+        a=1000
+    elif type == "peer":
+        a=10000
+    elif type == "peering":
+        a=100000
+    else:
+        print("Problème type client\n")
+    tn.write(b"neighbor 192.168.20.1 remote-as "+str(a).encode("ascii")+b"\n") # SELON TYPE CLIENT
 
 
     tn.write(b"\n")

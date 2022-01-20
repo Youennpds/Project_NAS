@@ -43,5 +43,5 @@ for router in bordures:
 for router in clients:
     for routerID in router:
         connected = [router[routerID]["connected"][0], bordures.index(router[routerID]["connected"][0])]
-        VM.configClient(routerID, router[routerID]["telnetPassword"], router[routerID]["ipAddress"], connected)
+        VM.configClient(routerID, router[routerID]["telnetPassword"], router[routerID]["ipAddress"], connected, router[routerID]["typeRouter"])
 
