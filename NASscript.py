@@ -3,7 +3,7 @@ import getpass
 import sys
 import telnetlib
 
-import setup.py as VM
+import setup as VM
 
 # Opening json
 with open('config.json') as json_data:
@@ -13,13 +13,20 @@ with open('config.json') as json_data:
 bordures = list([])
 coeurs = list([])
 clients = list([])
-connectedList = list([])
 connected = list([])
-for router in data_dict["DeviceList"]:
+connectedList = list([])
+D=data_dict["DeviceList"]
+for router in D:
     for routerID in router:
         typeRouter=router[routerID]["typeRouter"]
         if typeRouter == "bordure":
+            connectedList = list([])
             bordures.append(router)
+            for ID in router[routerID]["connected"]:
+                for router2 in D:
+                    for routerID2 in router2:
+                        if ID == routerID2:
+                            connectedList.append([ID,router2[ID]["typeRouter"]])
         elif typeRouter == "coeur":
             coeurs.append(router)
         elif typeRouter == "client" or typeRouter == "peer" or typeRouter == "peering" :
@@ -35,9 +42,7 @@ for router in coeurs:
         VM.configCoeur(routerID, router[routerID]["telnetPassword"], router[routerID]["ipAddress"], nbCoeur, coeurs.index(router), nbPE)
 
 for router in bordures:
-    for routerID in router:
-        for ID in router[routerID]["connected"]:
-            connectedList.append([ID,router[ID]["typeRouter"]])
+    for routerID in router:       
         VM.configBordure(routerID, router[routerID]["telnetPassword"], router[routerID]["ipAddress"], connectedList, bordures.index(router), nbCoeur, nbPE)
 
 for router in clients:
