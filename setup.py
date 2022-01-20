@@ -16,7 +16,7 @@ def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
     tn.write(b"interface Loopback0\n")
     a=str(100+10*(pos+1)).encode("ascii")
     tn.write(b"ip address "+a+b"."+a+b"."+a+b"."+a+b" 255.255.255.255\n")
-    tn.write(b"ip ospf 100 area 0\n") 
+    tn.write(b"ip ospf 100 area 0\n")
     tn.write(b"interface GigabitEthernet\n")
     tn.write(b"ip address\n")
     tn.write(b"ip ospf\n")
@@ -47,7 +47,7 @@ def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
     for i in range(nbPE):
         if i != pos:
             a=str(100+10*(i+1)).encode("ascii")
-            tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" remote-as 100\n") 
+            tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" remote-as 100\n")
             tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" update-source Loopback0\n")
             tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" send-community\n")
 
@@ -133,11 +133,12 @@ def configCoeur(id, mdp, ip, nbCoeur, pos, nbPE):
             tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" update-source Loopback0\n")
     for i in range(nbPE):
         a=str(100+10*(i+1)).encode("ascii")
-        tn.write(b"neighbor "+a+"."+a+"."+a+"."+a+" remote-as 100\n")
+        tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" remote-as 100\n")
         tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" update-source Loopback0\n")
 
     tn.write(b"\n")
     tn.write(b"end\n")
+    
 
 def configClient(id, mdp, ip, connected, type):
     tn = telnetlib.Telnet(ip)
@@ -146,12 +147,14 @@ def configClient(id, mdp, ip, connected, type):
     tn.read_until(b"Password:")
     tn.write(mdp.encode("ascii") + b"\n")
 
+    tn.write(b"show ip interface brief\n")
+    tn.write(b"\n")
     tn.write(b"enable\n")
     tn.write(b"cisco\n")
 
     #bgp
     a = str(100+10*(connected[1]+1)).encode("ascii")
-    tn.write(b"router bgp "+ a +"."+ a +"."+ a +"."+ a + b"\n") # @ loopback du routeur de bordure auquel il est connecté, connected donne [id, pos] du routeur de bordure
+    tn.write(b"router bgp "+ a +b"."+ a +b"."+ a +b"."+ a + b"\n") # @ loopback du routeur de bordure auquel il est connecté, connected donne [id, pos] du routeur de bordure
     tn.write(b"network 10.0.0.0 mask 255.255.255.0\n")
     if type == "client":
         a=1000
