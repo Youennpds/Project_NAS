@@ -24,8 +24,8 @@ def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
     tn.write(b"router ospf 100\n")
     tn.write(b"router-id "+str(100+10*(pos+1))+"."+str(100+10*(pos+1))+"."+str(100+10*(pos+1))+"."+str(100+10*(pos+1))+"\n") # @ loopbach
     for i in range(len(connected)):
-        tn.write(b"passive-interface GigabitEthernet"+str(3+i))+"/0\n")
-        tn.write(b"network 192.168."+str(20*(i+1)))+".0 0.0.0.255 area 0\n")
+        tn.write(b"passive-interface GigabitEthernet"+str(3+i)+"/0\n")
+        tn.write(b"network 192.168."+str(20*(i+1))+".0 0.0.0.255 area 0\n")
     tn.write(b"mpls ldp autoconfig\n")
 
     """
@@ -50,17 +50,17 @@ def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
 
     for i in range(len(connected)):
         if connected[i][1] == "client":
-            tn.write(b"neighbor 192.168."+str(20*(i+1)))+".2 remote-as 1000\n")
-            tn.write(b"neighbor 192.168."+str(20*(i+1)))+".2 route-map Inbound-Customer in\n")
-            tn.write(b"neighbor 192.168."+str(20*(i+1)))+".2 route-map Outbound-Customer out\n")
+            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 remote-as 1000\n")
+            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 route-map Inbound-Customer in\n")
+            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 route-map Outbound-Customer out\n")
         elif connected[i][1] == "peer":
-            tn.write(b"neighbor 192.168."+str(20*(i+1)))+".2 remote-as 10000\n")
-            tn.write(b"neighbor 192.168."+str(20*(i+1)))+".2 route-map Inbound-Peer in\n")
-            tn.write(b"neighbor 192.168."+str(20*(i+1)))+".2 route-map Outbound-Peer out\n")
+            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 remote-as 10000\n")
+            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 route-map Inbound-Peer in\n")
+            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 route-map Outbound-Peer out\n")
         elif connected[i][1] == "peering":
-            tn.write(b"neighbor 192.168."+str(20*(i+1)))+".2 remote-as 10000\n")
-            tn.write(b"neighbor 192.168."+str(20*(i+1)))+".2 route-map Inbound-Peering in\n")
-            tn.write(b"neighbor 192.168."+str(20*(i+1)))+".2 route-map Outbound-Peering out\n")
+            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 remote-as 10000\n")
+            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 route-map Inbound-Peering in\n")
+            tn.write(b"neighbor 192.168."+str(20*(i+1))+".2 route-map Outbound-Peering out\n")
         else:
             print("ERROR IN ROUTER TYPE CONNECTED")
 
