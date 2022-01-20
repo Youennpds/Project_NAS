@@ -1,0 +1,356 @@
+ 
+P1>enable
+Password: 
+P1#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+P1(config)#interface Loopback0
+P1(config-if)#ip address 10.10.10.10 255.255.255.255
+P1(config-if)#ip ospf 100 area 0
+P1(config-if)#interface GigabitEthernet2/0
+P1(config-if)#ip address 192.168.1.1 255.255.255.0
+P1(config-if)#no shutdown
+P1(config-if)#interface GigabitEthernet3/0
+P1(config-if)#ip address 192.168.2.2 255.255.255.0
+P1(config-if)#no shutdown
+P1(config-if)#interface GigabitEthernet4/0
+P1(config-if)#ip address 192.168.3.3 255.255.255.0
+P1(config-if)#no shutdown
+P1(config-if)#router ospf 100
+P1(config-router)#router-id 10.10.10.10
+P1(config-router)#mpls ldp autoconfig
+P1(config-router)#router bgp 100
+P1(config-router)#neighbor 20.20.20.20 remote-as 100
+P1(config-router)#neighbor 20.20.20.20 update-source Loopback0
+P1(config-router)#neighbor 30.30.30.30 remote-as 100
+P1(config-router)#neighbor 30.30.30.30 update-source Loopback0
+P1(config-router)#neighbor 40.40.40.40 remote-as 100
+P1(config-router)#neighbor 40.40.40.40 update-source Loopback0
+P1(config-router)#neighbor 110.110.110.110 remote-as 100
+P1(config-router)#neighbor 110.110.110.110 update-source Loopback0
+P1(config-router)#neighbor 120.120.120.120 remote-as 100
+P1(config-router)#neighbor 120.120.120.120 update-source Loopback0
+P1(config-router)#
+P1(config-router)#end
+P1#exit
+
+ 
+P2>enable
+Password: 
+P2#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+P2(config)#interface Loopback0
+P2(config-if)#ip address 20.20.20.20 255.255.255.255
+P2(config-if)#ip ospf 100 area 0
+P2(config-if)#interface GigabitEthernet2/0
+P2(config-if)#ip address 192.168.4.4 255.255.255.0
+P2(config-if)#no shutdown
+P2(config-if)#interface GigabitEthernet3/0
+P2(config-if)#ip address 192.168.5.5 255.255.255.0
+P2(config-if)#no shutdown
+P2(config-if)#interface GigabitEthernet4/0
+P2(config-if)#ip address 192.168.6.6 255.255.255.0
+P2(config-if)#no shutdown
+P2(config-if)#router ospf 100
+P2(config-router)#router-id 20.20.20.20
+P2(config-router)#mpls ldp autoconfig
+P2(config-router)#router bgp 100
+P2(config-router)#neighbor 10.10.10.10 remote-as 100
+P2(config-router)#neighbor 10.10.10.10 update-source Loopback0
+P2(config-router)#neighbor 30.30.30.30 remote-as 100
+P2(config-router)#neighbor 30.30.30.30 update-source Loopback0
+P2(config-router)#neighbor 40.40.40.40 remote-as 100
+P2(config-router)#neighbor 40.40.40.40 update-source Loopback0
+P2(config-router)#neighbor 110.110.110.110 remote-as 100
+P2(config-router)#neighbor 110.110.110.110 update-source Loopback0
+P2(config-router)#neighbor 120.120.120.120 remote-as 100
+P2(config-router)#neighbor 120.120.120.120 update-source Loopback0
+P2(config-router)#
+P2(config-router)#end
+P2#exit
+
+ 
+P3>enable
+Password: 
+P3#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+P3(config)#interface Loopback0
+P3(config-if)#ip address 30.30.30.30 255.255.255.255
+P3(config-if)#ip ospf 100 area 0
+P3(config-if)#interface GigabitEthernet2/0
+P3(config-if)#ip address 192.168.7.7 255.255.255.0
+P3(config-if)#no shutdown
+P3(config-if)#interface GigabitEthernet3/0
+P3(config-if)#ip address 192.168.8.8 255.255.255.0
+P3(config-if)#no shutdown
+P3(config-if)#interface GigabitEthernet4/0
+P3(config-if)#ip address 192.168.9.9 255.255.255.0
+P3(config-if)#no shutdown
+P3(config-if)#router ospf 100
+P3(config-router)#router-id 30.30.30.30
+P3(config-router)#mpls ldp autoconfig
+P3(config-router)#router bgp 100
+P3(config-router)#neighbor 10.10.10.10 remote-as 100
+P3(config-router)#neighbor 10.10.10.10 update-source Loopback0
+P3(config-router)#neighbor 20.20.20.20 remote-as 100
+P3(config-router)#neighbor 20.20.20.20 update-source Loopback0
+P3(config-router)#neighbor 40.40.40.40 remote-as 100
+P3(config-router)#neighbor 40.40.40.40 update-source Loopback0
+P3(config-router)#neighbor 110.110.110.110 remote-as 100
+P3(config-router)#neighbor 110.110.110.110 update-source Loopback0
+P3(config-router)#neighbor 120.120.120.120 remote-as 100
+P3(config-router)#neighbor 120.120.120.120 update-source Loopback0
+P3(config-router)#
+P3(config-router)#end
+P3#exit
+
+ 
+P4>enable
+Password: 
+P4#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+P4(config)#interface Loopback0
+P4(config-if)#ip address 40.40.40.40 255.255.255.255
+P4(config-if)#ip ospf 100 area 0
+P4(config-if)#interface GigabitEthernet2/0
+P4(config-if)#ip address 192.168.10.10 255.255.255.0
+P4(config-if)#no shutdown
+P4(config-if)#interface GigabitEthernet3/0
+P4(config-if)#ip address 192.168.11.11 255.255.255.0
+P4(config-if)#no shutdown
+P4(config-if)#interface GigabitEthernet4/0
+P4(config-if)#ip address 192.168.12.12 255.255.255.0
+P4(config-if)#no shutdown
+P4(config-if)#router ospf 100
+P4(config-router)#router-id 40.40.40.40
+P4(config-router)#mpls ldp autoconfig
+P4(config-router)#router bgp 100
+P4(config-router)#neighbor 10.10.10.10 remote-as 100
+P4(config-router)#neighbor 10.10.10.10 update-source Loopback0
+P4(config-router)#neighbor 20.20.20.20 remote-as 100
+P4(config-router)#neighbor 20.20.20.20 update-source Loopback0
+P4(config-router)#neighbor 30.30.30.30 remote-as 100
+P4(config-router)#neighbor 30.30.30.30 update-source Loopback0
+P4(config-router)#neighbor 110.110.110.110 remote-as 100
+P4(config-router)#neighbor 110.110.110.110 update-source Loopback0
+P4(config-router)#neighbor 120.120.120.120 remote-as 100
+P4(config-router)#neighbor 120.120.120.120 update-source Loopback0
+P4(config-router)#
+P4(config-router)#end
+P4#exit
+
+ 
+PE1>enable
+Password: 
+PE1#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+PE1(config)#interface Loopback0
+PE1(config-if)#ip address 110.110.110.110 255.255.255.255
+PE1(config-if)#ip ospf 100 area 0
+PE1(config-if)#interface GigabitEthernet2/0
+PE1(config-if)#ip address 192.168.10.1 255.255.255.0
+PE1(config-if)#no shutdown
+PE1(config-if)#interface GigabitEthernet3/0
+PE1(config-if)#ip address 192.168.20.1 255.255.255.0
+PE1(config-if)#no shutdown
+PE1(config-if)#interface GigabitEthernet4/0
+PE1(config-if)#ip address 192.168.1.1 255.255.255.0
+PE1(config-if)#no shutdown
+PE1(config-if)#interface GigabitEthernet5/0
+PE1(config-if)#ip address 192.168.2.1 255.255.255.0
+PE1(config-if)#no shutdown
+PE1(config-if)#router ospf 100
+PE1(config-router)#router-id 110.110.110.110
+PE1(config-router)#passive-interface GigabitEthernet2/0
+PE1(config-router)#network 192.168.10.0 0.0.0.255 area 0
+PE1(config-router)#passive-interface GigabitEthernet3/0
+PE1(config-router)#network 192.168.20.0 0.0.0.255 area 0
+PE1(config-router)#mpls ldp autoconfig
+PE1(config-router)#router bgp 100
+PE1(config-router)#bgp log-neighbor-changes
+PE1(config-router)#neighbor 10.10.10.10 remote-as 100
+PE1(config-router)#neighbor 10.10.10.10 update-source Loopback0
+PE1(config-router)#neighbor 10.10.10.10 send-community
+PE1(config-router)#neighbor 20.20.20.20 remote-as 100
+PE1(config-router)#neighbor 20.20.20.20 update-source Loopback0
+PE1(config-router)#neighbor 20.20.20.20 send-community
+PE1(config-router)#neighbor 30.30.30.30 remote-as 100
+PE1(config-router)#neighbor 30.30.30.30 update-source Loopback0
+PE1(config-router)#neighbor 30.30.30.30 send-community
+PE1(config-router)#neighbor 40.40.40.40 remote-as 100
+PE1(config-router)#neighbor 40.40.40.40 update-source Loopback0
+PE1(config-router)#neighbor 40.40.40.40 send-community
+PE1(config-router)#neighbor 120.120.120.120 remote-as 100
+PE1(config-router)#neighbor 120.120.120.120 update-source Loopback0
+PE1(config-router)#neighbor 120.120.120.120 send-community
+PE1(config-router)#neighbor 192.168.10.2 remote-as 1000
+PE1(config-router)#neighbor 192.168.10.2 route-map Inbound-Customer in
+PE1(config-router)#neighbor 192.168.10.2 route-map Outbound-Customer out
+PE1(config-router)#neighbor 192.168.20.2 remote-as 10000
+PE1(config-router)#neighbor 192.168.20.2 route-map Inbound-Peer in
+PE1(config-router)#neighbor 192.168.20.2 route-map Outbound-Peer out
+PE1(config-router)#route-map Outbound-Peering permit 10
+PE1(config-route-map)#match community Outbound-Peering
+PE1(config-route-map)#!
+PE1(config-route-map)#route-map Outbound-Peer permit 10
+PE1(config-route-map)#match community Outbound-Peer
+PE1(config-route-map)#!
+PE1(config-route-map)#route-map Outbound-Customer permit 10
+PE1(config-route-map)#match community Outbound-Customer
+PE1(config-route-map)#!
+PE1(config-route-map)#route-map Inbound-Peering permit 10
+PE1(config-route-map)#set local-preference 50
+PE1(config-route-map)#set community 100:50
+PE1(config-route-map)#!
+PE1(config-route-map)#route-map Inbound-Peer permit 10
+PE1(config-route-map)#set local-preference 100
+PE1(config-route-map)#set community 100:100
+PE1(config-route-map)#!
+PE1(config-route-map)#route-map Inbound-Customer permit 10
+PE1(config-route-map)#set local-preference 150
+PE1(config-route-map)#set community 100:150
+PE1(config-route-map)#ip community-list expanded Outbound-Customer permit 100$y-list expanded Outbound-Customer permit 100:         150
+PE1(config)#ip community-list expanded Outbound-Customer permit 100:100
+PE1(config)#ip community-list expanded Outbound-Customer permit 100:50
+PE1(config)#!
+PE1(config)#ip community-list expanded Outbound-Peering permit 100:150
+PE1(config)#!
+PE1(config)#ip community-list expanded Outbound-Peer permit 100:150
+PE1(config)#!
+PE1(config)#
+PE1(config)#end
+PE1#exit
+
+ 
+PE2>enable
+Password: 
+PE2#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+PE2(config)#interface Loopback0
+PE2(config-if)#ip address 120.120.120.120 255.255.255.255
+PE2(config-if)#ip ospf 100 area 0
+PE2(config-if)#interface GigabitEthernet2/0
+PE2(config-if)#ip address 192.168.30.1 255.255.255.0
+PE2(config-if)#no shutdown
+PE2(config-if)#interface GigabitEthernet3/0
+PE2(config-if)#ip address 192.168.40.1 255.255.255.0
+PE2(config-if)#no shutdown
+PE2(config-if)#interface GigabitEthernet4/0
+PE2(config-if)#ip address 192.168.3.1 255.255.255.0
+PE2(config-if)#no shutdown
+PE2(config-if)#interface GigabitEthernet5/0
+PE2(config-if)#ip address 192.168.4.1 255.255.255.0
+PE2(config-if)#no shutdown
+PE2(config-if)#router ospf 100
+PE2(config-router)#router-id 120.120.120.120
+PE2(config-router)#passive-interface GigabitEthernet2/0
+PE2(config-router)#network 192.168.30.0 0.0.0.255 area 0
+PE2(config-router)#passive-interface GigabitEthernet3/0
+PE2(config-router)#network 192.168.40.0 0.0.0.255 area 0
+PE2(config-router)#mpls ldp autoconfig
+PE2(config-router)#router bgp 100
+PE2(config-router)#bgp log-neighbor-changes
+PE2(config-router)#neighbor 10.10.10.10 remote-as 100
+PE2(config-router)#neighbor 10.10.10.10 update-source Loopback0
+PE2(config-router)#neighbor 10.10.10.10 send-community
+PE2(config-router)#neighbor 20.20.20.20 remote-as 100
+PE2(config-router)#neighbor 20.20.20.20 update-source Loopback0
+PE2(config-router)#neighbor 20.20.20.20 send-community
+PE2(config-router)#neighbor 30.30.30.30 remote-as 100
+PE2(config-router)#neighbor 30.30.30.30 update-source Loopback0
+PE2(config-router)#neighbor 30.30.30.30 send-community
+PE2(config-router)#neighbor 40.40.40.40 remote-as 100
+PE2(config-router)#neighbor 40.40.40.40 update-source Loopback0
+PE2(config-router)#neighbor 40.40.40.40 send-community
+PE2(config-router)#neighbor 110.110.110.110 remote-as 100
+PE2(config-router)#neighbor 110.110.110.110 update-source Loopback0
+PE2(config-router)#neighbor 110.110.110.110 send-community
+PE2(config-router)#neighbor 192.168.30.2 remote-as 1000
+PE2(config-router)#neighbor 192.168.30.2 route-map Inbound-Customer in
+PE2(config-router)#neighbor 192.168.30.2 route-map Outbound-Customer out
+PE2(config-router)#neighbor 192.168.40.2 remote-as 10000
+PE2(config-router)#neighbor 192.168.40.2 route-map Inbound-Peer in
+PE2(config-router)#neighbor 192.168.40.2 route-map Outbound-Peer out
+PE2(config-router)#route-map Outbound-Peering permit 10
+PE2(config-route-map)#match community Outbound-Peering
+PE2(config-route-map)#!
+PE2(config-route-map)#route-map Outbound-Peer permit 10
+PE2(config-route-map)#match community Outbound-Peer
+PE2(config-route-map)#!
+PE2(config-route-map)#route-map Outbound-Customer permit 10
+PE2(config-route-map)#match community Outbound-Customer
+PE2(config-route-map)#!
+PE2(config-route-map)#route-map Inbound-Peering permit 10
+PE2(config-route-map)#set local-preference 50
+PE2(config-route-map)#set community 100:50
+PE2(config-route-map)#!
+PE2(config-route-map)#route-map Inbound-Peer permit 10
+PE2(config-route-map)#set local-preference 100
+PE2(config-route-map)#set community 100:100
+PE2(config-route-map)#!
+PE2(config-route-map)#route-map Inbound-Customer permit 10
+PE2(config-route-map)#set local-preference 150
+PE2(config-route-map)#set community 100:150
+PE2(config-route-map)#ip community-list expanded Outbound-Customer permit 100$y-list expanded Outbound-Customer permit 100:         150
+PE2(config)#ip community-list expanded Outbound-Customer permit 100:100
+PE2(config)#ip community-list expanded Outbound-Customer permit 100:50
+PE2(config)#!
+PE2(config)#ip community-list expanded Outbound-Peering permit 100:150
+PE2(config)#!
+PE2(config)#ip community-list expanded Outbound-Peer permit 100:150
+PE2(config)#!
+PE2(config)#
+PE2(config)#end
+PE2#exit
+
+ 
+CE1>enable
+Password: 
+CE1#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+CE1(config)#interface GigabitEthernet2/0
+CE1(config-if)#ip address 192.168.10.2 255.255.255.0
+CE1(config-if)#router bgp 100
+CE1(config-router)#neighbor 192.168.10.1 remote-as 1000
+CE1(config-router)#
+CE1(config-router)#end
+CE1#exit
+
+ 
+CE2>enable
+Password: 
+CE2#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+CE2(config)#interface GigabitEthernet2/0
+CE2(config-if)#ip address 192.168.30.2 255.255.255.0
+CE2(config-if)#router bgp 100
+CE2(config-router)#neighbor 192.168.30.1 remote-as 1000
+CE2(config-router)#
+CE2(config-router)#end
+CE2#exit
+
+ 
+CE-PE1>enable
+Password: 
+CE-PE1#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+CE-PE1(config)#interface GigabitEthernet2/0
+CE-PE1(config-if)#ip address 192.168.20.2 255.255.255.0
+CE-PE1(config-if)#router bgp 100
+CE-PE1(config-router)#neighbor 192.168.20.1 remote-as 10000
+CE-PE1(config-router)#
+CE-PE1(config-router)#end
+CE-PE1#exit
+
+ 
+CE-PE2>enable
+Password: 
+CE-PE2#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+CE-PE2(config)#interface GigabitEthernet2/0
+CE-PE2(config-if)#ip address 192.168.40.2 255.255.255.0
+CE-PE2(config-if)#router bgp 100
+CE-PE2(config-router)#neighbor 192.168.40.1 remote-as 10000
+CE-PE2(config-router)#
+CE-PE2(config-router)#end
+CE-PE2#exit
+

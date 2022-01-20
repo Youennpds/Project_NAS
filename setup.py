@@ -25,9 +25,9 @@ def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
     for i in range(len(connected)+nbCoeurCoPE):
         tn.write(b"interface GigabitEthernet" + str(2+i).encode("ascii") + b"/0\n")
         if i < len(connected):
-            tn.write(b"ip address 192.168."+str(10*(i+1)+20*pos).encode("ascii")+ b".2 255.255.255.0\n")
+            tn.write(b"ip address 192.168."+str(10*(i+1)+20*pos).encode("ascii")+ b".1 255.255.255.0\n")
         else:
-            tn.write(b"ip address 192.168."+str((i-1+2*pos)).encode("ascii")+ b".2 255.255.255.0\n")
+            tn.write(b"ip address 192.168."+str((i-1+2*pos)).encode("ascii")+ b".1 255.255.255.0\n")
         #tn.write(b"ip ospf 100 area 0\n")
         tn.write(b"no shutdown\n")
 
@@ -152,7 +152,7 @@ def configCoeur(id, mdp, ip, nbCoeur, pos, nbPE, incr):
     print(tn.read_all().decode("ascii"))
     return(incr)
 
-def configClient(id, mdp, ip, connected, type):
+def configClient(id, mdp, ip, connected, type, posInConnectedListPE):
     tn = telnetlib.Telnet(ip)
     tn.read_until(b"Username:")
     tn.write(id.encode("ascii") + b"\n")
@@ -163,6 +163,11 @@ def configClient(id, mdp, ip, connected, type):
     tn.write(b"cisco\n")
 
     tn.write(b"conf t\n")
+
+    tn.write(b"interface GigabitEthernet2/0\n")
+    tn.write(b"ip address 192.168."+str(10*(posInConnectedListPE+1)+20*connected[1]).encode("ascii")+ b".2 255.255.255.0\n")
+
+
     #bgp
     a = str(100+10*(connected[1]+1)).encode("ascii")
     tn.write(b"router bgp 100\n") # @ loopback du routeur de bordure auquel il est connecté, connected donne [id, pos] du routeur de bordure
@@ -175,7 +180,8 @@ def configClient(id, mdp, ip, connected, type):
         a=100000
     else:
         print("Problème type client\n")
-    tn.write(b"neighbor 192.168.20.1 remote-as "+str(a).encode("ascii")+b"\n") # SELON TYPE CLIENT
+
+    tn.write(b"neighbor 192.168."+str(10*(posInConnectedListPE+1)+20*connected[1]).encode("ascii")+ b".1 remote-as "+str(a).encode("ascii")+b"\n") # SELON TYPE CLIENT
     tn.write(b"\n")
     tn.write(b"end\n")
     tn.write(b"exit\n")

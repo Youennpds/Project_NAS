@@ -53,5 +53,6 @@ for router in clients:
             for PEID in PE:
                 if PEID == router[routerID]["connected"][0]:
                     connected = [PEID, bordures.index(PE)]
+                    posInConnectedListPE = PE[PEID]["connected"].index(routerID)
         #connected = [router[routerID]["connected"][0], bordures.index(router[routerID]["connected"][0])]
-        VM.configClient(routerID, router[routerID]["telnetPassword"], router[routerID]["ipAddress"], connected, router[routerID]["typeRouter"])
+        VM.configClient(routerID, router[routerID]["telnetPassword"], router[routerID]["ipAddress"], connected, router[routerID]["typeRouter"], posInConnectedListPE)
