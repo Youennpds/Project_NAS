@@ -2,6 +2,9 @@ import getpass
 import sys
 import telnetlib
 
+nbCoeurCoPE=2
+nbCoCoeur=3
+
 def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
     tn = telnetlib.Telnet(ip)
     tn.read_until(b"Username:")
@@ -12,29 +15,29 @@ def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
     tn.write(b"enable\n")
     tn.write(b"cisco\n")
 
+    tn.write(b"conf t\n")
     #config interface
     tn.write(b"interface Loopback0\n")
     a=str(100+10*(pos+1)).encode("ascii")
     tn.write(b"ip address "+a+b"."+a+b"."+a+b"."+a+b" 255.255.255.255\n")
     tn.write(b"ip ospf 100 area 0\n")
-    tn.write(b"interface GigabitEthernet\n")
-    tn.write(b"ip address\n")
-    tn.write(b"ip ospf\n")
+
+    for i in range(len(connected)+nbCoeurCoPE):
+        tn.write(b"interface GigabitEthernet" + str(2+i).encode("ascii") + b"/0\n")
+        if i < len(connected):
+            tn.write(b"ip address 192.168."+str(10*(i+1)+20*pos).encode("ascii")+ b".2 255.255.255.0\n")
+        else:
+            tn.write(b"ip address 192.168."+str((i-1+2*pos)).encode("ascii")+ b".2 255.255.255.0\n")
+        #tn.write(b"ip ospf 100 area 0\n")
+        tn.write(b"no shutdown\n")
 
     #config ospf
     tn.write(b"router ospf 100\n")
     tn.write(b"router-id "+a+b"."+a+b"."+a+b"."+a+b"\n") # @ loopback
     for i in range(len(connected)):
-        tn.write(b"passive-interface GigabitEthernet"+str(3+i).encode("ascii")+b"/0\n")
-        tn.write(b"network 192.168."+str(20*(i+1)).encode("ascii")+b".0 0.0.0.255 area 0\n")
+        tn.write(b"passive-interface GigabitEthernet"+str(2+i).encode("ascii")+b"/0\n")
+        tn.write(b"network 192.168."+str(10*(i+1)+20*pos).encode("ascii")+b".0 0.0.0.255 area 0\n")
     tn.write(b"mpls ldp autoconfig\n")
-
-    """
-    tn.write(b"passive-interface GigabitEthernet3/0\n")
-    tn.write(b"passive-interface GigabitEthernet4/0\n") #?
-    tn.write(b"network 192.168.20.0 0.0.0.255 area 0\n") # client
-    tn.write(b"network 192.168.40.0 0.0.0.255 area 0\n") # peer
-    """
 
     #config bgp
     tn.write(b"router bgp 100\n")
@@ -52,7 +55,7 @@ def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
             tn.write(b"neighbor "+a+b"."+a+b"."+a+b"."+a+b" send-community\n")
 
     for i in range(len(connected)):
-        a=str(20*(i+1)).encode("ascii")
+        a=str(10*(i+1)+20*pos).encode("ascii")
         if connected[i][1] == "client":
             tn.write(b"neighbor 192.168."+a+b".2 remote-as 1000\n")
             tn.write(b"neighbor 192.168."+a+b".2 route-map Inbound-Customer in\n")
@@ -100,8 +103,10 @@ def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
 
     tn.write(b"\n")
     tn.write(b"end\n")
+    tn.write(b"exit\n")
+    print(tn.read_all().decode("ascii"))
 
-def configCoeur(id, mdp, ip, nbCoeur, pos, nbPE):
+def configCoeur(id, mdp, ip, nbCoeur, pos, nbPE, incr):
     tn = telnetlib.Telnet(ip)
     tn.read_until(b"Username:")
     tn.write(id.encode("ascii") + b"\n")
@@ -111,13 +116,18 @@ def configCoeur(id, mdp, ip, nbCoeur, pos, nbPE):
     tn.write(b"enable\n")
     tn.write(b"cisco\n")
 
+    tn.write(b"conf t\n")
     tn.write(b"interface Loopback0\n")
     a=str(10*(pos+1)).encode("ascii")
     tn.write(b"ip address "+a+b"."+a+b"."+a+b"."+a+b" 255.255.255.255\n")
     tn.write(b"ip ospf 100 area 0\n")
-    tn.write(b"interface GigabitEthernet\n")
-    tn.write(b"ip address\n")
-    tn.write(b"ip ospf\n")
+
+    for i in range(nbCoCoeur):
+        tn.write(b"interface GigabitEthernet"+str(2+i).encode("ascii")+b"/0\n")
+        tn.write(b"ip address 192.168."+str(incr).encode("ascii")+b"."+str(incr).encode("ascii")+b" 255.255.255.0\n")
+        #tn.write(b"ip ospf 100 area 0\n")
+        tn.write(b"no shutdown\n")
+        incr+=1
 
     #ospf
     tn.write(b"router ospf 100\n")
@@ -138,7 +148,9 @@ def configCoeur(id, mdp, ip, nbCoeur, pos, nbPE):
 
     tn.write(b"\n")
     tn.write(b"end\n")
-    
+    tn.write(b"exit\n")
+    print(tn.read_all().decode("ascii"))
+    return(incr)
 
 def configClient(id, mdp, ip, connected, type):
     tn = telnetlib.Telnet(ip)
@@ -147,15 +159,14 @@ def configClient(id, mdp, ip, connected, type):
     tn.read_until(b"Password:")
     tn.write(mdp.encode("ascii") + b"\n")
 
-    tn.write(b"show ip interface brief\n")
-    tn.write(b"\n")
     tn.write(b"enable\n")
     tn.write(b"cisco\n")
 
+    tn.write(b"conf t\n")
     #bgp
     a = str(100+10*(connected[1]+1)).encode("ascii")
-    tn.write(b"router bgp "+ a +b"."+ a +b"."+ a +b"."+ a + b"\n") # @ loopback du routeur de bordure auquel il est connecté, connected donne [id, pos] du routeur de bordure
-    tn.write(b"network 10.0.0.0 mask 255.255.255.0\n")
+    tn.write(b"router bgp 100\n") # @ loopback du routeur de bordure auquel il est connecté, connected donne [id, pos] du routeur de bordure
+    #tn.write(b"network 10.0.0.0 mask 255.255.255.0\n") #on en a besoin pour ping d'un endroit different et verif que tout marche
     if type == "client":
         a=1000
     elif type == "peer":
@@ -165,7 +176,7 @@ def configClient(id, mdp, ip, connected, type):
     else:
         print("Problème type client\n")
     tn.write(b"neighbor 192.168.20.1 remote-as "+str(a).encode("ascii")+b"\n") # SELON TYPE CLIENT
-
-
     tn.write(b"\n")
     tn.write(b"end\n")
+    tn.write(b"exit\n")
+    print(tn.read_all().decode("ascii"))
