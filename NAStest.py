@@ -40,7 +40,8 @@ nbPE=len(bordures)
 incr=1
 for router in coeurs:
     for routerID in router:
-        incr=VM.configCoeur(routerID, router[routerID]["telnetPassword"], router[routerID]["ipAddress"], nbCoeur, coeurs.index(router), nbPE, incr)
+        connected = router[routerID]["connected"]
+        VM.configCoeur(routerID, router[routerID]["telnetPassword"], router[routerID]["ipAddress"], nbCoeur, coeurs.index(router), nbPE, connected)
 
 for router in bordures:
     for routerID in router:
