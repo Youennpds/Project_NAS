@@ -1,3 +1,4 @@
+[]
  
 P1>enable
 Password: 
@@ -171,10 +172,10 @@ PE1(config-if)#interface GigabitEthernet3/0
 PE1(config-if)#ip address 192.168.20.1 255.255.255.0
 PE1(config-if)#no shutdown
 PE1(config-if)#interface GigabitEthernet4/0
-PE1(config-if)#ip address 192.168.112.1 255.255.255.0
+PE1(config-if)#ip address 192.168.111.1 255.255.255.0
 PE1(config-if)#no shutdown
 PE1(config-if)#interface GigabitEthernet5/0
-PE1(config-if)#ip address 192.168.114.1 255.255.255.0
+PE1(config-if)#ip address 192.168.113.1 255.255.255.0
 PE1(config-if)#no shutdown
 PE1(config-if)#router ospf 100
 PE1(config-router)#router-id 110.110.110.110

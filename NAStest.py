@@ -20,19 +20,15 @@ for router in D:
     for routerID in router:
         typeRouter=router[routerID]["typeRouter"]
         if typeRouter == "bordure":
-            connectedList = list([])
             bordures.append(router)
-            for ID in router[routerID]["connected"]:
-                for router2 in D:
-                    for routerID2 in router2:
-                        if ID == routerID2:
-                            connectedList.append([ID,router2[ID]["typeRouter"]])
         elif typeRouter == "coeur":
             coeurs.append(router)
         elif typeRouter == "client" or typeRouter == "peer" or typeRouter == "peering" :
             clients.append(router)
         else:
             print ("Type non valide")
+
+print(connectedList)
 
 # 1ere étape: config des routeurs de coeur
 nbCoeur=len(coeurs)
@@ -45,6 +41,16 @@ for router in coeurs:
 
 for router in bordures:
     for routerID in router:
+        connectedList = list([])
+
+        for ID in router[routerID]["connected"]:
+            if ID[0] == "P" :
+                connectedList.append([ID,"coeur"])
+            else:
+                for router2 in D:
+                    for routerID2 in router2:
+                        if ID == routerID2:
+                            connectedList.append([ID,router2[ID]["typeRouter"]])
         VM.configBordure(routerID, router[routerID]["telnetPassword"], router[routerID]["ipAddress"], connectedList, bordures.index(router), nbCoeur, nbPE)
 
 incr=1

@@ -3,69 +3,69 @@
       {
         "P1": {
           "ipAddress":"192.169.0.1",
-          "telnetPassword":"password", 
+          "telnetPassword":"password",
           "typeRouter":"coeur",
-          "connected":["P2","P3","PE1"]    
+          "connected":["P2","P3","PE1"]
         }
       },
       {
         "P2": {
           "ipAddress":"192.169.0.2",
-          "telnetPassword":"password", 
+          "telnetPassword":"password",
           "typeRouter":"coeur",
-          "connected":["P1","P4","PE2"]    
+          "connected":["P1","P4","PE2"]
           }
       },
       {
         "P3": {
           "ipAddress":"192.169.0.3",
-          "telnetPassword":"password", 
+          "telnetPassword":"password",
           "typeRouter":"coeur",
-          "connected":["P1","P4","PE1"]    
+          "connected":["P1","P4","PE1"]
           }
       },
       {
         "P4": {
           "ipAddress":"192.169.0.4",
-          "telnetPassword":"password", 
+          "telnetPassword":"password",
           "typeRouter":"coeur",
-          "connected":["P2","P3","PE2"]    
+          "connected":["P2","P3","PE2"]
           }
       },
       {
-        "PE1": { 
+        "PE1": {
           "ipAddress":"192.169.0.5",
           "telnetPassword":"password",
           "typeRouter":"bordure",
-          "connected":["CE1","CE-PE1","P1","P3"]    
+          "connected":["CE1","CE-PE1","P1","P3"]
         }
       },
       {
-        "PE2": { 
+        "PE2": {
           "ipAddress":"192.169.0.6",
           "telnetPassword":"password",
           "typeRouter":"bordure",
-          "connected":["CE2","CE-PE2","P2","P4"]    
+          "connected":["CE2","CE-PE2","P2","P4"]
         }
       },
       {
-        "CE1": { 
+        "CE1": {
           "ipAddress":"192.169.0.11",
           "telnetPassword":"password",
           "typeRouter":"client",
-          "connected":["PE1"]    
+          "connected":["PE1"]
         }
       },
       {
-        "CE2": { 
+        "CE2": {
           "ipAddress":"192.169.0.12",
           "telnetPassword":"password",
           "typeRouter":"client",
-          "connected":["PE2"]    
+          "connected":["PE2"]
         }
       },
       {
-        "CE-PE1": { 
+        "CE-PE1": {
           "ipAddress":"192.169.0.13",
           "telnetPassword":"password",
           "typeRouter":"peer",
@@ -73,12 +73,12 @@
         }
       },
       {
-        "CE-PE2": { 
+        "CE-PE2": {
           "ipAddress":"192.169.0.14",
           "telnetPassword":"password",
           "typeRouter":"peer",
-          "connected":["PE2"]    
+          "connected":["PE2"]
         }
       }
-    ]  
+    ]
 }

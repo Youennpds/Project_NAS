@@ -21,12 +21,12 @@ def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
 
     for i in range(len(connected)):
         tn.write(b"interface GigabitEthernet" + str(2+i).encode("ascii") + b"/0\n")
-        
-        if connected[i][0] == "C": # clients, peer, peering
+
+        if connected[i][0][0] == "C": # clients, peer, peering
             tn.write(b"ip address 192.168."+str(10*(i+1)+20*pos).encode("ascii")+ b".1 255.255.255.0\n")
         else: # coeur
-            lien=2*str(pos)+str(connected[i][1]).encode("ascii")
-            tn.write(b"ip address 192.168."+lien+ b".1 255.255.255.0\n") 
+            lien=(2*str(pos+1)+str(connected[i][0][1])).encode("ascii")
+            tn.write(b"ip address 192.168."+lien+ b".1 255.255.255.0\n")
         #tn.write(b"ip ospf 100 area 0\n")
         tn.write(b"no shutdown\n")
 
@@ -111,14 +111,14 @@ def configCoeur(id, mdp, ip, nbCoeur, pos, nbPE, connected):
     tn.write(b"ip address "+a+b"."+a+b"."+a+b"."+a+b" 255.255.255.255\n")
     tn.write(b"ip ospf 100 area 0\n")
 
-    for i in range(len(connected)): # Adressage des liens (Ex liens:  P6, P3 -> 36, lien PE4, P1 -> 441) 
+    for i in range(len(connected)): # Adressage des liens (Ex liens:  P6, P3 -> 36, lien PE4, P1 -> 441)
         co = int(connected[i][-1])
         if connected[i][1] == "E": # Test si le lien est avec un routeur de bordure
-            lien = 2*str(co)+str(pos) 
+            lien = 2*str(co)+str(pos+1)
             quel = 2
         else:
-            lien = str(min(pos,co)) + str (max(pos,co))
-            if min(pos,co) == pos: # Si on est sur le min .1 et .2 sur le max 
+            lien = str(min(pos+1,co)) + str (max(pos+1,co))
+            if min(pos+1,co) == pos+1: # Si on est sur le min .1 et .2 sur le max
                 quel = 1
             else:
                 quel = 2
@@ -126,7 +126,6 @@ def configCoeur(id, mdp, ip, nbCoeur, pos, nbPE, connected):
         tn.write(b"ip address 192.168."+lien.encode("ascii")+b"."+str(quel).encode("ascii")+b" 255.255.255.0\n")
         #tn.write(b"ip ospf 100 area 0\n")
         tn.write(b"no shutdown\n")
-        incr+=1
         tn.write(b"exit\n")
 
     #ospf
@@ -167,14 +166,14 @@ def configClient(id, mdp, ip, connected, type, posInConnectedListPE):
     tn.write(b"no shutdown\n")
     tn.write(b"exit\n")
 
-    # bgp    
+    # bgp
     #tn.write(b"network 10.0.0.0 mask 255.255.255.0\n") # On en a besoin pour ping d'un endroit different et verif que tout marche
     if type == "client":
-        a=1000*(posInConnectedListPE+1)
+        a=1000*(int(id[-1]))
     elif type == "peer":
-        a=10000*(posInConnectedListPE+1)
+        a=10000*(int(id[-1]))
     elif type == "peering":
-        a=100000*(posInConnectedListPE+1)
+        a=100000*(int(id[-1]))
     else:
         print("Problème type client\n")
     tn.write(b"router bgp "+str(a).encode("ascii")+b"\n") # @ loopback du routeur de bordure auquel il est connecté, connected donne [id, pos] du routeur de bordure
