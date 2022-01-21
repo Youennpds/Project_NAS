@@ -4,28 +4,32 @@
         "P1": {
           "ipAddress":"192.169.0.1",
           "telnetPassword":"password", 
-          "typeRouter":"coeur"    
+          "typeRouter":"coeur",
+          "connected":["P2","P3","PE1"]    
         }
       },
       {
         "P2": {
           "ipAddress":"192.169.0.2",
           "telnetPassword":"password", 
-          "typeRouter":"coeur"    
+          "typeRouter":"coeur",
+          "connected":["P1","P4","PE2"]    
           }
       },
       {
         "P3": {
           "ipAddress":"192.169.0.3",
           "telnetPassword":"password", 
-          "typeRouter":"coeur"    
+          "typeRouter":"coeur",
+          "connected":["P1","P4","PE1"]    
           }
       },
       {
         "P4": {
           "ipAddress":"192.169.0.4",
           "telnetPassword":"password", 
-          "typeRouter":"coeur"    
+          "typeRouter":"coeur",
+          "connected":["P2","P3","PE2"]    
           }
       },
       {
@@ -33,7 +37,7 @@
           "ipAddress":"192.169.0.5",
           "telnetPassword":"password",
           "typeRouter":"bordure",
-          "connected":["CE1","CE-PE1"]    
+          "connected":["CE1","CE-PE1","P1","P3"]    
         }
       },
       {
@@ -41,7 +45,7 @@
           "ipAddress":"192.169.0.6",
           "telnetPassword":"password",
           "typeRouter":"bordure",
-          "connected":["CE2","CE-PE2"]    
+          "connected":["CE2","CE-PE2","P2","P4"]    
         }
       },
       {
