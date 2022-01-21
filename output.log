@@ -7,15 +7,15 @@ P1(config)#interface Loopback0
 P1(config-if)#ip address 10.10.10.10 255.255.255.255
 P1(config-if)#ip ospf 100 area 0
 P1(config-if)#interface GigabitEthernet2/0
-P1(config-if)#ip address 192.168.1.1 255.255.255.0
+P1(config-if)#ip address 192.168.12.1 255.255.255.0
 P1(config-if)#no shutdown
 P1(config-if)#exit
 P1(config)#interface GigabitEthernet3/0
-P1(config-if)#ip address 192.168.2.2 255.255.255.0
+P1(config-if)#ip address 192.168.13.1 255.255.255.0
 P1(config-if)#no shutdown
 P1(config-if)#exit
 P1(config)#interface GigabitEthernet4/0
-P1(config-if)#ip address 192.168.3.3 255.255.255.0
+P1(config-if)#ip address 192.168.111.2 255.255.255.0
 P1(config-if)#no shutdown
 P1(config-if)#exit
 P1(config)#router ospf 100
@@ -46,15 +46,15 @@ P2(config)#interface Loopback0
 P2(config-if)#ip address 20.20.20.20 255.255.255.255
 P2(config-if)#ip ospf 100 area 0
 P2(config-if)#interface GigabitEthernet2/0
-P2(config-if)#ip address 192.168.4.4 255.255.255.0
+P2(config-if)#ip address 192.168.12.2 255.255.255.0
 P2(config-if)#no shutdown
 P2(config-if)#exit
 P2(config)#interface GigabitEthernet3/0
-P2(config-if)#ip address 192.168.5.5 255.255.255.0
+P2(config-if)#ip address 192.168.24.1 255.255.255.0
 P2(config-if)#no shutdown
 P2(config-if)#exit
 P2(config)#interface GigabitEthernet4/0
-P2(config-if)#ip address 192.168.6.6 255.255.255.0
+P2(config-if)#ip address 192.168.222.2 255.255.255.0
 P2(config-if)#no shutdown
 P2(config-if)#exit
 P2(config)#router ospf 100
@@ -85,15 +85,15 @@ P3(config)#interface Loopback0
 P3(config-if)#ip address 30.30.30.30 255.255.255.255
 P3(config-if)#ip ospf 100 area 0
 P3(config-if)#interface GigabitEthernet2/0
-P3(config-if)#ip address 192.168.7.7 255.255.255.0
+P3(config-if)#ip address 192.168.13.2 255.255.255.0
 P3(config-if)#no shutdown
 P3(config-if)#exit
 P3(config)#interface GigabitEthernet3/0
-P3(config-if)#ip address 192.168.8.8 255.255.255.0
+P3(config-if)#ip address 192.168.34.1 255.255.255.0
 P3(config-if)#no shutdown
 P3(config-if)#exit
 P3(config)#interface GigabitEthernet4/0
-P3(config-if)#ip address 192.168.9.9 255.255.255.0
+P3(config-if)#ip address 192.168.113.2 255.255.255.0
 P3(config-if)#no shutdown
 P3(config-if)#exit
 P3(config)#router ospf 100
@@ -124,15 +124,15 @@ P4(config)#interface Loopback0
 P4(config-if)#ip address 40.40.40.40 255.255.255.255
 P4(config-if)#ip ospf 100 area 0
 P4(config-if)#interface GigabitEthernet2/0
-P4(config-if)#ip address 192.168.10.10 255.255.255.0
+P4(config-if)#ip address 192.168.24.2 255.255.255.0
 P4(config-if)#no shutdown
 P4(config-if)#exit
 P4(config)#interface GigabitEthernet3/0
-P4(config-if)#ip address 192.168.11.11 255.255.255.0
+P4(config-if)#ip address 192.168.34.2 255.255.255.0
 P4(config-if)#no shutdown
 P4(config-if)#exit
 P4(config)#interface GigabitEthernet4/0
-P4(config-if)#ip address 192.168.12.12 255.255.255.0
+P4(config-if)#ip address 192.168.224.2 255.255.255.0
 P4(config-if)#no shutdown
 P4(config-if)#exit
 P4(config)#router ospf 100
@@ -154,6 +154,8 @@ P4(config-router)#
 P4(config-router)#end
 P4#exit
 
+ERROR IN ROUTER TYPE CONNECTED
+ERROR IN ROUTER TYPE CONNECTED
  
 PE1>enable
 Password: 
@@ -169,10 +171,10 @@ PE1(config-if)#interface GigabitEthernet3/0
 PE1(config-if)#ip address 192.168.20.1 255.255.255.0
 PE1(config-if)#no shutdown
 PE1(config-if)#interface GigabitEthernet4/0
-PE1(config-if)#ip address 192.168.1.1 255.255.255.0
+PE1(config-if)#ip address 192.168.112.1 255.255.255.0
 PE1(config-if)#no shutdown
 PE1(config-if)#interface GigabitEthernet5/0
-PE1(config-if)#ip address 192.168.2.1 255.255.255.0
+PE1(config-if)#ip address 192.168.114.1 255.255.255.0
 PE1(config-if)#no shutdown
 PE1(config-if)#router ospf 100
 PE1(config-router)#router-id 110.110.110.110
@@ -180,6 +182,10 @@ PE1(config-router)#passive-interface GigabitEthernet2/0
 PE1(config-router)#network 192.168.10.0 0.0.0.255 area 0
 PE1(config-router)#passive-interface GigabitEthernet3/0
 PE1(config-router)#network 192.168.20.0 0.0.0.255 area 0
+PE1(config-router)#passive-interface GigabitEthernet4/0
+PE1(config-router)#network 192.168.30.0 0.0.0.255 area 0
+PE1(config-router)#passive-interface GigabitEthernet5/0
+PE1(config-router)#network 192.168.40.0 0.0.0.255 area 0
 PE1(config-router)#mpls ldp autoconfig
 PE1(config-router)#router bgp 100
 PE1(config-router)#bgp log-neighbor-changes
@@ -228,6 +234,8 @@ PE1(config)#ip community-list expanded Outbound-Peer permit 100:150
 PE1(config)#end
 PE1#exit
 
+ERROR IN ROUTER TYPE CONNECTED
+ERROR IN ROUTER TYPE CONNECTED
  
 PE2>enable
 Password: 
@@ -243,10 +251,10 @@ PE2(config-if)#interface GigabitEthernet3/0
 PE2(config-if)#ip address 192.168.40.1 255.255.255.0
 PE2(config-if)#no shutdown
 PE2(config-if)#interface GigabitEthernet4/0
-PE2(config-if)#ip address 192.168.3.1 255.255.255.0
+PE2(config-if)#ip address 192.168.222.1 255.255.255.0
 PE2(config-if)#no shutdown
 PE2(config-if)#interface GigabitEthernet5/0
-PE2(config-if)#ip address 192.168.4.1 255.255.255.0
+PE2(config-if)#ip address 192.168.224.1 255.255.255.0
 PE2(config-if)#no shutdown
 PE2(config-if)#router ospf 100
 PE2(config-router)#router-id 120.120.120.120
@@ -254,6 +262,10 @@ PE2(config-router)#passive-interface GigabitEthernet2/0
 PE2(config-router)#network 192.168.30.0 0.0.0.255 area 0
 PE2(config-router)#passive-interface GigabitEthernet3/0
 PE2(config-router)#network 192.168.40.0 0.0.0.255 area 0
+PE2(config-router)#passive-interface GigabitEthernet4/0
+PE2(config-router)#network 192.168.50.0 0.0.0.255 area 0
+PE2(config-router)#passive-interface GigabitEthernet5/0
+PE2(config-router)#network 192.168.60.0 0.0.0.255 area 0
 PE2(config-router)#mpls ldp autoconfig
 PE2(config-router)#router bgp 100
 PE2(config-router)#bgp log-neighbor-changes
@@ -311,8 +323,8 @@ CE1(config)#interface GigabitEthernet2/0
 CE1(config-if)#ip address 192.168.10.2 255.255.255.0
 CE1(config-if)#no shutdown
 CE1(config-if)#exit
-CE1(config)#router bgp 100
-CE1(config-router)#neighbor 192.168.10.1 remote-as 1000
+CE1(config)#router bgp 1000
+CE1(config-router)#neighbor 192.168.10.1 remote-as 100
 CE1(config-router)#
 CE1(config-router)#end
 CE1#exit
@@ -326,8 +338,8 @@ CE2(config)#interface GigabitEthernet2/0
 CE2(config-if)#ip address 192.168.30.2 255.255.255.0
 CE2(config-if)#no shutdown
 CE2(config-if)#exit
-CE2(config)#router bgp 100
-CE2(config-router)#neighbor 192.168.30.1 remote-as 1000
+CE2(config)#router bgp 2000
+CE2(config-router)#neighbor 192.168.30.1 remote-as 100
 CE2(config-router)#
 CE2(config-router)#end
 CE2#exit
@@ -341,8 +353,8 @@ CE-PE1(config)#interface GigabitEthernet2/0
 CE-PE1(config-if)#ip address 192.168.20.2 255.255.255.0
 CE-PE1(config-if)#no shutdown
 CE-PE1(config-if)#exit
-CE-PE1(config)#router bgp 100
-CE-PE1(config-router)#neighbor 192.168.20.1 remote-as 10000
+CE-PE1(config)#router bgp 10000
+CE-PE1(config-router)#neighbor 192.168.20.1 remote-as 100
 CE-PE1(config-router)#
 CE-PE1(config-router)#end
 CE-PE1#exit
@@ -356,8 +368,8 @@ CE-PE2(config)#interface GigabitEthernet2/0
 CE-PE2(config-if)#ip address 192.168.40.2 255.255.255.0
 CE-PE2(config-if)#no shutdown
 CE-PE2(config-if)#exit
-CE-PE2(config)#router bgp 100
-CE-PE2(config-router)#neighbor 192.168.40.1 remote-as 10000
+CE-PE2(config)#router bgp 20000
+CE-PE2(config-router)#neighbor 192.168.40.1 remote-as 100
 CE-PE2(config-router)#
 CE-PE2(config-router)#end
 CE-PE2#exit
