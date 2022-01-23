@@ -224,15 +224,10 @@ PE1(config-router)#neighbor 192.168.10.2 route-map Outbound-Customer out
 PE1(config-router)#neighbor 192.168.20.2 remote-as 10000
 PE1(config-router)#neighbor 192.168.20.2 route-map Inbound-Peer in
 PE1(config-router)#neighbor 192.168.20.2 route-map Outbound-Peer out
-PE1(config-router)#route-map Outbound-Peering permit 10
-PE1(config-route-map)#match community Outbound-Peering
-PE1(config-route-map)#route-map Outbound-Peer permit 10
+PE1(config-router)#route-map Outbound-Peer permit 10
 PE1(config-route-map)#match community Outbound-Peer
 PE1(config-route-map)#route-map Outbound-Customer permit 10
 PE1(config-route-map)#match community Outbound-Customer
-PE1(config-route-map)#route-map Inbound-Peering permit 10
-PE1(config-route-map)#set local-preference 50
-PE1(config-route-map)#set community 100:50
 PE1(config-route-map)#route-map Inbound-Peer permit 10
 PE1(config-route-map)#set local-preference 100
 PE1(config-route-map)#set community 100:100
@@ -243,7 +238,6 @@ PE1(config-route-map)#exit
 PE1(config)#ip community-list expanded Outbound-Customer permit 100:50
 PE1(config)#ip community-list expanded Outbound-Customer permit 100:100
 PE1(config)#ip community-list expanded Outbound-Customer permit 100:150
-PE1(config)#ip community-list expanded Outbound-Peering permit 100:150
 PE1(config)#ip community-list expanded Outbound-Peer permit 100:150
 PE1(config)#end
 PE1#exit
@@ -300,21 +294,16 @@ PE2(config-router)#neighbor 40.40.40.40 send-community
 PE2(config-router)#neighbor 110.110.110.110 remote-as 100
 PE2(config-router)#neighbor 110.110.110.110 update-source Loopback0
 PE2(config-router)#neighbor 110.110.110.110 send-community
-PE2(config-router)#neighbor 192.168.30.2 remote-as 1000
+PE2(config-router)#neighbor 192.168.30.2 remote-as 2000
 PE2(config-router)#neighbor 192.168.30.2 route-map Inbound-Customer in
 PE2(config-router)#neighbor 192.168.30.2 route-map Outbound-Customer out
-PE2(config-router)#neighbor 192.168.40.2 remote-as 10000
+PE2(config-router)#neighbor 192.168.40.2 remote-as 20000
 PE2(config-router)#neighbor 192.168.40.2 route-map Inbound-Peer in
 PE2(config-router)#neighbor 192.168.40.2 route-map Outbound-Peer out
-PE2(config-router)#route-map Outbound-Peering permit 10
-PE2(config-route-map)#match community Outbound-Peering
-PE2(config-route-map)#route-map Outbound-Peer permit 10
+PE2(config-router)#route-map Outbound-Peer permit 10
 PE2(config-route-map)#match community Outbound-Peer
 PE2(config-route-map)#route-map Outbound-Customer permit 10
 PE2(config-route-map)#match community Outbound-Customer
-PE2(config-route-map)#route-map Inbound-Peering permit 10
-PE2(config-route-map)#set local-preference 50
-PE2(config-route-map)#set community 100:50
 PE2(config-route-map)#route-map Inbound-Peer permit 10
 PE2(config-route-map)#set local-preference 100
 PE2(config-route-map)#set community 100:100
@@ -325,7 +314,6 @@ PE2(config-route-map)#exit
 PE2(config)#ip community-list expanded Outbound-Customer permit 100:50
 PE2(config)#ip community-list expanded Outbound-Customer permit 100:100
 PE2(config)#ip community-list expanded Outbound-Customer permit 100:150
-PE2(config)#ip community-list expanded Outbound-Peering permit 100:150
 PE2(config)#ip community-list expanded Outbound-Peer permit 100:150
 PE2(config)#end
 PE2#exit

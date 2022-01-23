@@ -75,26 +75,38 @@ def configBordure(id, mdp, ip, connected, pos, nbCoeur, nbPE):
 
     tn.write(b"route-map Outbound-Peering permit 10\n")
     tn.write(b"match community Outbound-Peering\n")
+    tn.write(b"exit\n")
+
     tn.write(b"route-map Outbound-Peer permit 10\n")
     tn.write(b"match community Outbound-Peer\n")
+    tn.write(b"exit\n")
+
     tn.write(b"route-map Outbound-Customer permit 10\n")
     tn.write(b"match community Outbound-Customer\n")
+    tn.write(b"exit\n")
+
     tn.write(b"route-map Inbound-Peering permit 10\n")
     tn.write(b"set local-preference 50\n")
     tn.write(b"set community 100:50\n")
+    tn.write(b"exit\n")
+
     tn.write(b"route-map Inbound-Peer permit 10\n")
     tn.write(b"set local-preference 100\n")
     tn.write(b"set community 100:100\n")
+    tn.write(b"exit\n")
+
     tn.write(b"route-map Inbound-Customer permit 10\n")
     tn.write(b"set local-preference 150\n")
     tn.write(b"set community 100:150\n")
     tn.write(b"exit\n")
+
     tn.write(b"ip community-list expanded Outbound-Customer permit 100:50\n")
     tn.write(b"ip community-list expanded Outbound-Customer permit 100:100\n")
     tn.write(b"ip community-list expanded Outbound-Customer permit 100:150\n")
     tn.write(b"ip community-list expanded Outbound-Peering permit 100:150\n")
     tn.write(b"ip community-list expanded Outbound-Peer permit 100:150\n")
-    tn.write(b"end\n")
+    tn.write(b"exit\n")
+
     tn.write(b"exit\n")
     print(tn.read_all().decode("ascii"))
 
